@@ -18,10 +18,10 @@ import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAHelper;
+import org.omg.PortableServer.Servant;
 import org.omg.PortableServer.POAManagerPackage.AdapterInactive;
 import org.omg.PortableServer.POAPackage.AdapterAlreadyExists;
 import org.omg.PortableServer.POAPackage.InvalidPolicy;
-import org.springframework.util.Assert;
 
 import com.onevu.corba.exception.OnevuCorbaException;
 
@@ -232,6 +232,16 @@ public abstract class CorbaUtils {
 		catch ( org.omg.CORBA.SystemException ex ) {
 			throw new OnevuCorbaException("SystemException caught for " + tokenName + ": "+ex);
 		}		
+	}
+	
+	public static org.omg.CORBA.Object servantToReference(POA customPOA, Servant servant) {
+		Assert.notNull(customPOA, "POA must not be Null.");
+		Assert.notNull(servant, "Corba Servant must not be Null.");
+		try {
+			return customPOA.servant_to_reference(servant);
+		} catch(Exception ex) {
+			throw new OnevuCorbaException("Exception during servant_to_reference due to " + ex.getMessage());
+		}
 	}
 
 	public static void startCorbaServer(ORB orb) {

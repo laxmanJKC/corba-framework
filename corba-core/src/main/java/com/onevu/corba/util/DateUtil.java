@@ -5,8 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.springframework.util.Assert;
-
 public abstract class DateUtil {
 
 	public static Date getDate(String source, String format) throws ParseException {

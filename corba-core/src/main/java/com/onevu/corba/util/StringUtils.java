@@ -7,9 +7,6 @@ import org.springframework.util.Assert;
 
 public abstract class StringUtils {
 
-	// ---------------------------------------------------------------------
-	// General convenience methods for working with Strings
-	// ---------------------------------------------------------------------
 	public static boolean isEmpty(Object str) {
 		return (str == null || "".equals(str));
 	}
