@@ -2,6 +2,8 @@ package com.onevu.corba.beans.domain;
 
 public class RootBeanDefinition extends AbstractBeanDefinition {
 	
+	private String parentName;
+	
 	private String beanClassName;
 	
 	private Object source;
@@ -9,6 +11,8 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 	private boolean isAbstract;
 	
 	private boolean autowireCandidate;
+	
+	private boolean lazyInit;
 
 	public RootBeanDefinition(String beanClassName) {
 		this.beanClassName = beanClassName;
@@ -21,11 +25,12 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 
 	@Override
 	public void setParentName(String parentName) {
+		this.parentName = parentName;
 	}
 
 	@Override
 	public String getParentName() {
-		return null;
+		return this.parentName;
 	}
 
 	@Override
@@ -40,11 +45,12 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 
 	@Override
 	public void setLazyInit(boolean lazyInit) {
+		this.lazyInit = lazyInit;
 	}
 
 	@Override
 	public boolean isLazyInit() {
-		return false;
+		return this.lazyInit;
 	}
 
 	@Override
@@ -77,10 +83,12 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 
 	@Override
 	public AbstractBeanDefinition cloneBeanDefinition() {
-		RootBeanDefinition rootBeanDefinition = new RootBeanDefinition(beanClassName);
+		RootBeanDefinition rootBeanDefinition = new RootBeanDefinition(getBeanClassName());
+		rootBeanDefinition.setParentName(getParentName());
 		rootBeanDefinition.setAutowireCandidate(isAutowireCandidate());
 		rootBeanDefinition.setSource(getSource());
 		rootBeanDefinition.setAbstract(isAbstract());
+		rootBeanDefinition.setLazyInit(isLazyInit());
 		return rootBeanDefinition; 
 	}
 

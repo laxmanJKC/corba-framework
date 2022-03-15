@@ -228,4 +228,32 @@ public abstract class ClassUtils {
 	public static boolean isInnerClass(Class<?> clazz) {
 		return (clazz.isMemberClass() && !Modifier.isStatic(clazz.getModifiers()));
 	}
+
+
+	public static boolean isAssignableValue(Class<?> type, Object value) {
+		Assert.notNull(type, "Type must not be null");
+		return (value != null ? isAssignable(type, value.getClass()) : !type.isPrimitive());
+	}
+	
+	public static boolean isAssignable(Class<?> lhsType, Class<?> rhsType) {
+		Assert.notNull(lhsType, "Left-hand side type must not be null");
+		Assert.notNull(rhsType, "Right-hand side type must not be null");
+		if (lhsType.isAssignableFrom(rhsType)) {
+			return true;
+		}
+		if (lhsType.isPrimitive()) {
+			Class<?> resolvedPrimitive = primitiveWrapperTypeMap.get(rhsType);
+			return (lhsType == resolvedPrimitive);
+		}
+		else {
+			Class<?> resolvedWrapper = primitiveTypeToWrapperMap.get(rhsType);
+			return (resolvedWrapper != null && lhsType.isAssignableFrom(resolvedWrapper));
+		}
+	}
+
+
+	public static boolean matchesTypeName(Class<?> clazz, String typeName) {
+		return (typeName != null &&
+				(typeName.equals(clazz.getTypeName()) || typeName.equals(clazz.getSimpleName())));
+	}
 }
