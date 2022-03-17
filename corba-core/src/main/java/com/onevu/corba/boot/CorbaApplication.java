@@ -12,6 +12,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import com.onevu.corba.beans.domain.AbstractBeanDefinition;
+import com.onevu.corba.beans.domain.BeanDefinition;
 import com.onevu.corba.beans.domain.RootBeanDefinition;
 import com.onevu.corba.exception.BeanDefinitionStoreException;
 import com.onevu.corba.exception.BeanInstantiationException;
@@ -24,7 +25,7 @@ import com.onevu.corba.util.Assert;
 
 public class CorbaApplication {
 	
-	private static PropertySources doMain(Class<?> clazz, String ...args) {
+	private PropertySources doMain(Class<?> clazz, String ...args) {
 		PropertySources propertySources = new PropertySources();
 		if (args == null || args.length ==0) {
 			return propertySources;
@@ -53,7 +54,8 @@ public class CorbaApplication {
 	
 	public static BeanDefinitionRegistry run(Class<?> clazz, String ...args) throws Exception {
 		Assert.notNull(clazz, "Class Name not found");
-		PropertySources propertySources = doMain(clazz, args);
+		CorbaApplication corbaApplication = new CorbaApplication();
+		PropertySources propertySources = corbaApplication.doMain(clazz, args);
 		String packageName = clazz.getPackage().getName();
 		ClassPathScanningCandidateComponentProvider candidateComponentProvider = new ClassPathScanningCandidateComponentProvider();
 		BeanDefinitionRegistry beanDefinitionRegistry = candidateComponentProvider.getRegistry();
@@ -64,6 +66,7 @@ public class CorbaApplication {
 		try {
 			candidateComponentProvider.scan(packageName);
 			candidateComponentProvider.refresh();
+			corbaApplication.configureCorbaServer(beanDefinitionRegistry);
 		} catch (ClassNotFoundException | IOException | BeanDefinitionStoreException e) {
 			throw e;
 		} catch (BeanInstantiationException e) {
@@ -74,6 +77,8 @@ public class CorbaApplication {
 		return beanDefinitionRegistry;
 	}
 	
-	private void configureCorbaServer(BeanDefinitionRegistry registry) {
+	private void configureCorbaServer(BeanDefinitionRegistry registry) throws NoSuchBeanDefinitionException {
+		BeanDefinition propertySourcesBeanDefinition = registry.getBeanDefinition(ENVIRONMENT_KEY);
+		PropertySources propertySources = (PropertySources) propertySourcesBeanDefinition.getSource();
 	}
 }
