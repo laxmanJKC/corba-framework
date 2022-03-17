@@ -16,4 +16,8 @@ public class CorbaConstants {
 	
 	public static final String CORBA_POA_SUFFIX = "_poa";
 	
+	public static final String CORBA_PROPERTIES = "corba.properties";
+	
+	public static final String ENVIRONMENT_KEY = "environment-properties";
+	
 }

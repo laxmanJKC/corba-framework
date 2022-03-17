@@ -1,5 +1,8 @@
 package com.onevu.corba.boot;
 
+import static com.onevu.corba.constants.CorbaConstants.ENVIRONMENT_KEY;
+import static com.onevu.corba.constants.CorbaConstants.CORBA_PROPERTIES;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,7 +31,7 @@ public class CorbaApplication {
 		}
 		Properties properties = new Properties();
 		for (String arg: args) {
-			if (arg.startsWith("corba.properties") || arg.startsWith("-Dcorba.properties")) {
+			if (arg.startsWith(CORBA_PROPERTIES) || arg.startsWith("-D" + CORBA_PROPERTIES)) {
 				String []value = arg.split("=");
 				InputStream inputStream;
 				try {
@@ -57,7 +60,7 @@ public class CorbaApplication {
 		AbstractBeanDefinition beanDefinition = new RootBeanDefinition();
 		beanDefinition.setBeanClass(propertySources.getClass());
 		beanDefinition.setSource(propertySources);
-		beanDefinitionRegistry.registerBeanDefinition("environment-properties", beanDefinition);
+		beanDefinitionRegistry.registerBeanDefinition(ENVIRONMENT_KEY, beanDefinition);
 		try {
 			candidateComponentProvider.scan(packageName);
 			candidateComponentProvider.refresh();
@@ -68,7 +71,9 @@ public class CorbaApplication {
 		} catch (NoSuchBeanDefinitionException e) {
 			throw e;
 		}
-		return candidateComponentProvider.getRegistry();
-		
+		return beanDefinitionRegistry;
+	}
+	
+	private void configureCorbaServer(BeanDefinitionRegistry registry) {
 	}
 }
