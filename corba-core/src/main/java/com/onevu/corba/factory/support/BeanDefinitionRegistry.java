@@ -23,6 +23,9 @@ public interface BeanDefinitionRegistry {
 	 * @throws NoSuchBeanDefinitionException if there is no such bean definition
 	 */
 	BeanDefinition getBeanDefinition(String beanName) throws NoSuchBeanDefinitionException;
+	
+	
+	BeanDefinition getInitializedBeanDefinition(String beanName) throws NoSuchBeanDefinitionException;
 
 	/**
 	 * Check if this registry contains a bean definition with the given name.

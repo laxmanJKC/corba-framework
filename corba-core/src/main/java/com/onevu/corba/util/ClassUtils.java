@@ -2,6 +2,7 @@ package com.onevu.corba.util;
 
 import java.io.Closeable;
 import java.io.Externalizable;
+import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
@@ -228,7 +229,11 @@ public abstract class ClassUtils {
 	public static boolean isInnerClass(Class<?> clazz) {
 		return (clazz.isMemberClass() && !Modifier.isStatic(clazz.getModifiers()));
 	}
-
+	
+	public static String convertClassNameToResourcePath(String className) {
+		Assert.notNull(className, "Class name must not be null");
+		return className.replace(PACKAGE_SEPARATOR, PATH_SEPARATOR);
+	}
 
 	public static boolean isAssignableValue(Class<?> type, Object value) {
 		Assert.notNull(type, "Type must not be null");
@@ -250,7 +255,15 @@ public abstract class ClassUtils {
 			return (resolvedWrapper != null && lhsType.isAssignableFrom(resolvedWrapper));
 		}
 	}
-
+	
+	public static String convertResourceToPath(String basePackage, String filePath) {
+		Assert.notNull(basePackage, "Basepackage must not be null");
+		Assert.notNull(filePath, "Path must not be null");
+		String pathPattern = basePackage.replace(".", File.separator);
+		int start = filePath.indexOf(pathPattern);
+		String baseClassName = filePath.substring(start).replace(File.separator, ".").replace(".class", "");
+		return baseClassName;
+	}
 
 	public static boolean matchesTypeName(Class<?> clazz, String typeName) {
 		return (typeName != null &&

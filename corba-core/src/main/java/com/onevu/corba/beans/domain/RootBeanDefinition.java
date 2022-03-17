@@ -1,26 +1,33 @@
 package com.onevu.corba.beans.domain;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
+
 public class RootBeanDefinition extends AbstractBeanDefinition {
 	
 	private String parentName;
 	
-	private String beanClassName;
-	
-	private Object source;
-	
-	private boolean isAbstract;
-	
 	private boolean autowireCandidate;
 	
 	private boolean lazyInit;
+	
+	
+	
+	public RootBeanDefinition() {
+	}
 
-	public RootBeanDefinition(String beanClassName) {
-		this.beanClassName = beanClassName;
+	public RootBeanDefinition(Class<?> beanClass) {
+		setBeanClass(beanClass);
 	}
 	
-	public RootBeanDefinition(String beanClassName, Object source) {
-		this.beanClassName = beanClassName;
-		this.source = source;
+	public <T> RootBeanDefinition(Class<T> beanClass, Object source) {
+		this(beanClass);
+		setSource(source);
+	}
+		
+	public RootBeanDefinition(Class<?> beanClass, ConstructorArgumentValues cargs) {
+		super(cargs);
+		setBeanClass(beanClass);
 	}
 
 	@Override
@@ -31,16 +38,6 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 	@Override
 	public String getParentName() {
 		return this.parentName;
-	}
-
-	@Override
-	public void setBeanClassName(String beanClassName) {
-		this.beanClassName = beanClassName;
-	}
-
-	@Override
-	public String getBeanClassName() {
-		return this.beanClassName;
 	}
 
 	@Override
@@ -62,34 +59,26 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 	public boolean isAutowireCandidate() {
 		return this.autowireCandidate;
 	}
-	
-	public void setAbstract(boolean isAbstract) {
-		this.isAbstract = isAbstract;
-	}
 
 	@Override
 	public boolean isAbstract() {
-		return isAbstract;
+		if (hasBeanClass()) {
+			Class clazz = (Class) getBeanClass();
+			return Modifier.isAbstract(clazz.getModifiers());
+		}
+		return false;
 	}
 	
-	public void setSource(Object source) {
-		this.source = source;
-	}
-
-	@Override
-	public Object getSource() {
-		return this.source;
-	}
-
 	@Override
 	public AbstractBeanDefinition cloneBeanDefinition() {
-		RootBeanDefinition rootBeanDefinition = new RootBeanDefinition(getBeanClassName());
+		RootBeanDefinition rootBeanDefinition = new RootBeanDefinition();
+		rootBeanDefinition.setBeanClassName(getBeanClassName());
 		rootBeanDefinition.setParentName(getParentName());
+		rootBeanDefinition.setBeanClass(getBeanClass());
+		rootBeanDefinition.setConstructorArgumentValues(getConstructorArgumentValues());
 		rootBeanDefinition.setAutowireCandidate(isAutowireCandidate());
 		rootBeanDefinition.setSource(getSource());
-		rootBeanDefinition.setAbstract(isAbstract());
 		rootBeanDefinition.setLazyInit(isLazyInit());
 		return rootBeanDefinition; 
 	}
-
 }

@@ -15,4 +15,10 @@ public class DelimiterConstants {
 	public static final String DOT_DELIMITER = ".";
 	
 	public static final String COLON_DELIMITER = ":";
+	
+	public static final String DEFAULT_RESOURCE_PATTERN = "**/*.class";
+	
+	public static final String CLASS_EXTENSION = ".class";
+	
+	public static final String CLASSPATH_ALL_URL_PREFIX = "classpath*:";
 }

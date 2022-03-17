@@ -1,7 +1,9 @@
 package com.onevu.corba.beans.domain;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,7 +17,9 @@ import com.onevu.corba.util.Assert;
 import com.onevu.corba.util.ClassUtils;
 import com.onevu.corba.util.ObjectUtils;
 
-public class ConstructorArgumentValues {
+public class ConstructorArgumentValues implements Comparator<ConstructorArgumentValues> {
+	
+	private Constructor ctor;
 
 	private final Map<Integer, ValueHolder> indexedArgumentValues = new LinkedHashMap<Integer, ValueHolder>();
 
@@ -24,7 +28,8 @@ public class ConstructorArgumentValues {
 	/**
 	 * Create a new empty ConstructorArgumentValues object.
 	 */
-	public ConstructorArgumentValues() {
+	public ConstructorArgumentValues(Constructor ctor) {
+		this.ctor = ctor;
 	}
 
 	/**
@@ -424,6 +429,10 @@ public class ConstructorArgumentValues {
 		return hashCode;
 	}
 
+	public Constructor getCtor() {
+		return ctor;
+	}
+
 	public static class ValueHolder {
 
 		private Object value;
@@ -584,5 +593,13 @@ public class ConstructorArgumentValues {
 			copy.setSource(this.source);
 			return copy;
 		}
+	}
+
+	@Override
+	public int compare(ConstructorArgumentValues o1, ConstructorArgumentValues o2) {
+		if (o1.getArgumentCount() - o2.getArgumentCount() == 0) {
+			return 0;
+		}
+		return o1.getArgumentCount() - o2.getArgumentCount() > 0 ? 1: -1;
 	}
 }
