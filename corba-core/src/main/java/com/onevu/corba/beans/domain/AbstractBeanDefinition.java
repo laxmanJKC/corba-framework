@@ -68,6 +68,13 @@ public abstract class AbstractBeanDefinition implements BeanDefinition, Cloneabl
 	public void setBeanClass(Object beanClass) {
 		this.beanClass = beanClass;
 	}
+	
+	public <T> T getBean(Class<T> clazz) {
+		if (getSource() == null || clazz == null) {
+			return null;
+		}
+		return (T) getSource();
+	}
 
 	public List<ConstructorArgumentValues> fetchConstructorArgument() {
 		List<ConstructorArgumentValues> constructorArgumentValues = new ArrayList<ConstructorArgumentValues>();

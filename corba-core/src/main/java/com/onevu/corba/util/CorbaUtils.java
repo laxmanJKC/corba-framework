@@ -186,7 +186,7 @@ public abstract class CorbaUtils {
 		}
 		String tokenName = stringTokenizer.nextToken();
 		nameComponent[0] = StringUtils.createNameComponent(tokenName);
-		rebindCorbaObject(objectContext, objectContext, tokenName, nameComponent);
+		rebindCorbaObject(objectContext, object, tokenName, nameComponent);
 	}
 	
 	private static void rebindCorbaObject(NamingContext objectContext, org.omg.CORBA.Object objImpl, String tokenName, NameComponent ...nameComponents) {

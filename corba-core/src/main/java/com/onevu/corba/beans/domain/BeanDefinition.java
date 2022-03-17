@@ -21,4 +21,6 @@ public interface BeanDefinition {
 	boolean isAbstract();
 
 	Object getSource();
+	
+	<T> T getBean(Class<T> clazz);
 }
