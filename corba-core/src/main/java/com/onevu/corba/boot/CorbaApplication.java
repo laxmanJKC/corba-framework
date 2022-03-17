@@ -126,7 +126,7 @@ public class CorbaApplication {
 			case "registerName":
 				BeanDefinition orbBBeanDefinition = registry.getBeanDefinition("ORB");
 				BeanDefinition obhRefBeanDefinition = registry.getBeanDefinition("serverCorbaObjRef");
-				CorbaUtils.registerName(orbbBeanDefinition.getBean(ORB.class), CORBA_ONEVU+ serverName, obhRefBeanDefinition.getBean(org.omg.CORBA.Object.class), false);
+				CorbaUtils.registerName(orbBBeanDefinition.getBean(ORB.class), CORBA_ONEVU+ serverName, obhRefBeanDefinition.getBean(org.omg.CORBA.Object.class), false);
 				break;
 			default:
 				break;
