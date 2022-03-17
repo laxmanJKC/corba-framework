@@ -8,10 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-
-import org.springframework.beans.Mergeable;
 
 import com.onevu.corba.util.Assert;
 import com.onevu.corba.util.ClassUtils;
@@ -30,36 +27,6 @@ public class ConstructorArgumentValues implements Comparator<ConstructorArgument
 	 */
 	public ConstructorArgumentValues(Constructor ctor) {
 		this.ctor = ctor;
-	}
-
-	/**
-	 * Deep copy constructor.
-	 * 
-	 * @param original the ConstructorArgumentValues to copy
-	 */
-	public ConstructorArgumentValues(ConstructorArgumentValues original) {
-		addArgumentValues(original);
-	}
-
-	/**
-	 * Copy all given argument values into this object, using separate holder
-	 * instances to keep the values independent from the original object.
-	 * <p>
-	 * Note: Identical ValueHolder instances will only be registered once, to allow
-	 * for merging and re-merging of argument value definitions. Distinct
-	 * ValueHolder instances carrying the same content are of course allowed.
-	 */
-	public void addArgumentValues(ConstructorArgumentValues other) {
-		if (other != null) {
-			for (Entry<Integer, ValueHolder> valueHolderEntry : other.indexedArgumentValues.entrySet()) {
-				addOrMergeIndexedArgumentValue(valueHolderEntry.getKey(), valueHolderEntry.getValue());
-			}
-			for (ValueHolder valueHolder : other.genericArgumentValues) {
-				if (!this.genericArgumentValues.contains(valueHolder)) {
-					addOrMergeGenericArgumentValue(valueHolder.copy());
-				}
-			}
-		}
 	}
 
 	/**
@@ -82,38 +49,7 @@ public class ConstructorArgumentValues implements Comparator<ConstructorArgument
 	public void addIndexedArgumentValue(int index, Object value, String type) {
 		addIndexedArgumentValue(index, new ValueHolder(value, type));
 	}
-
-	/**
-	 * Add an argument value for the given index in the constructor argument list.
-	 * 
-	 * @param index    the index in the constructor argument list
-	 * @param newValue the argument value in the form of a ValueHolder
-	 */
-	public void addIndexedArgumentValue(int index, ValueHolder newValue) {
-		Assert.isTrue(index >= 0, "Index must not be negative");
-		Assert.notNull(newValue, "ValueHolder must not be null");
-		addOrMergeIndexedArgumentValue(index, newValue);
-	}
-
-	/**
-	 * Add an argument value for the given index in the constructor argument list,
-	 * merging the new value (typically a collection) with the current value if
-	 * demanded: see {@link org.springframework.beans.Mergeable}.
-	 * 
-	 * @param key      the index in the constructor argument list
-	 * @param newValue the argument value in the form of a ValueHolder
-	 */
-	private void addOrMergeIndexedArgumentValue(Integer key, ValueHolder newValue) {
-		ValueHolder currentValue = this.indexedArgumentValues.get(key);
-		if (currentValue != null && newValue.getValue() instanceof Mergeable) {
-			Mergeable mergeable = (Mergeable) newValue.getValue();
-			if (mergeable.isMergeEnabled()) {
-				newValue.setValue(mergeable.merge(currentValue.getValue()));
-			}
-		}
-		this.indexedArgumentValues.put(key, newValue);
-	}
-
+	
 	/**
 	 * Check whether an argument value has been registered for the given index.
 	 * 
@@ -121,6 +57,10 @@ public class ConstructorArgumentValues implements Comparator<ConstructorArgument
 	 */
 	public boolean hasIndexedArgumentValue(int index) {
 		return this.indexedArgumentValues.containsKey(index);
+	}
+	
+	public void addIndexedArgumentValue(int index, ValueHolder valueHolder) {
+		this.indexedArgumentValues.put(index, valueHolder);
 	}
 
 	/**
@@ -193,50 +133,9 @@ public class ConstructorArgumentValues implements Comparator<ConstructorArgument
 		this.genericArgumentValues.add(new ValueHolder(value, type));
 	}
 
-	/**
-	 * Add a generic argument value to be matched by type or name (if available).
-	 * <p>
-	 * Note: A single generic argument value will just be used once, rather than
-	 * matched multiple times.
-	 * 
-	 * @param newValue the argument value in the form of a ValueHolder
-	 *                 <p>
-	 *                 Note: Identical ValueHolder instances will only be registered
-	 *                 once, to allow for merging and re-merging of argument value
-	 *                 definitions. Distinct ValueHolder instances carrying the same
-	 *                 content are of course allowed.
-	 */
-	public void addGenericArgumentValue(ValueHolder newValue) {
-		Assert.notNull(newValue, "ValueHolder must not be null");
-		if (!this.genericArgumentValues.contains(newValue)) {
-			addOrMergeGenericArgumentValue(newValue);
-		}
-	}
 
-	/**
-	 * Add a generic argument value, merging the new value (typically a collection)
-	 * with the current value if demanded: see
-	 * {@link org.springframework.beans.Mergeable}.
-	 * 
-	 * @param newValue the argument value in the form of a ValueHolder
-	 */
-	private void addOrMergeGenericArgumentValue(ValueHolder newValue) {
-		if (newValue.getName() != null) {
-			for (Iterator<ValueHolder> it = this.genericArgumentValues.iterator(); it.hasNext();) {
-				ValueHolder currentValue = it.next();
-				if (newValue.getName().equals(currentValue.getName())) {
-					if (newValue.getValue() instanceof Mergeable) {
-						Mergeable mergeable = (Mergeable) newValue.getValue();
-						if (mergeable.isMergeEnabled()) {
-							newValue.setValue(mergeable.merge(currentValue.getValue()));
-						}
-					}
-					it.remove();
-				}
-			}
-		}
-		this.genericArgumentValues.add(newValue);
-	}
+
+
 
 	/**
 	 * Look for a generic argument value that matches the given type.

@@ -26,9 +26,6 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.onevu.corba.util.ResourceUtils;
 
 /**
@@ -58,10 +55,6 @@ public abstract class AbstractResource extends Resource {
 				return getFile().exists();
 			}
 			catch (IOException ex) {
-				Log logger = LogFactory.getLog(getClass());
-				if (logger.isDebugEnabled()) {
-					logger.debug("Could not retrieve File for existence check of " + getDescription(), ex);
-				}
 			}
 		}
 		// Fall back to stream existence: can we open the stream?
@@ -70,10 +63,6 @@ public abstract class AbstractResource extends Resource {
 			return true;
 		}
 		catch (Throwable ex) {
-			Log logger = LogFactory.getLog(getClass());
-			if (logger.isDebugEnabled()) {
-				logger.debug("Could not retrieve InputStream for existence check of " + getDescription(), ex);
-			}
 			return false;
 		}
 	}
@@ -170,10 +159,6 @@ public abstract class AbstractResource extends Resource {
 				is.close();
 			}
 			catch (IOException ex) {
-				Log logger = LogFactory.getLog(getClass());
-				if (logger.isDebugEnabled()) {
-					logger.debug("Could not close content-length InputStream for " + getDescription(), ex);
-				}
 			}
 		}
 	}

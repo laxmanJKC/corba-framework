@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.omg.CosNaming.NameComponent;
-import org.springframework.util.Assert;
 
 public abstract class StringUtils {
 	
