@@ -12,6 +12,8 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 
+		<commons-lang3.version>3.12.0</commons-lang3.version>
+
 		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
 		<idlj-maven-plugin.version>1.2.2</idlj-maven-plugin.version>
 
@@ -30,8 +32,9 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.jacorb</groupId>
-				<artifactId>jacorb</artifactId>
+				<artifactId>jacorb-parent</artifactId>
 				<version>${jacorb.version}</version>
+				<type>pom</type>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.corba</groupId>
@@ -92,6 +95,16 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-expression</artifactId>
 				<version>${org.springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-configuration-processor</artifactId>
+				<version>${spring-boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons-lang3.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
