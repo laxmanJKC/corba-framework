@@ -3,12 +3,14 @@ package com.onevue.spring.configuration;
 import java.util.List;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
 
 import lombok.Data;
 
 @Data
-@ConfigurationProperties(prefix = "onevue.corba")
+@Configuration
+@ConfigurationProperties(prefix = "onevue.corba", ignoreInvalidFields = true)
 public class OnevueCorbaProperties {
 
 	private String orbClass;

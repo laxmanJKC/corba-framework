@@ -11,6 +11,7 @@ import java.util.Properties;
 import org.omg.CORBA.ORB;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.onevue.spring.configuration.OnevueCorbaProperties;
@@ -22,13 +23,13 @@ public class ORBFactoryBean implements InitializingBean, FactoryBean<ORB> {
 
 	private final OnevueCorbaProperties onevueCorbaProperties;
 
-	public ORBFactoryBean(OnevueCorbaProperties onevueCorbaProperties) {
+	public ORBFactoryBean(@Lazy OnevueCorbaProperties onevueCorbaProperties) {
 		this.onevueCorbaProperties = onevueCorbaProperties;
 	}
 
 	public void init() {
 		Properties properties = properties();
-		String []orbArgs = onevueCorbaProperties.getOrbArgs();
+		String[] orbArgs = onevueCorbaProperties.getOrbArgs();
 		this.orb = ORB.init(orbArgs, properties);
 	}
 
