@@ -43,7 +43,8 @@ public class HelloServer {
 
       // get object reference from the servant
       org.omg.CORBA.Object ref = rootpoa.servant_to_reference(helloImpl);
-      Hello href = HelloHelper.narrow(ref);
+      
+      //Hello href = HelloHelper.narrow(ref);
 	  
       // get the root naming context
       // NameService invokes the name service
@@ -56,7 +57,7 @@ public class HelloServer {
       // bind the Object Reference in Naming
       String name = "Hello";
       NameComponent path[] = ncRef.to_name( name );
-      ncRef.rebind(path, href);
+      ncRef.rebind(path, ref);
 
       System.out.println("HelloServer ready and waiting ...");
 
