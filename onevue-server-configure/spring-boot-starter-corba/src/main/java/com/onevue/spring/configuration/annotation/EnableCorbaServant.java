@@ -16,4 +16,7 @@ import com.onevue.spring.configuration.CorbaServantRegistry;
 @Import(CorbaServantRegistry.class)
 public @interface EnableCorbaServant {
 
+	String[] basePackages() default {};
+
+	Class<?>[] basePackageClasses() default {};
 }

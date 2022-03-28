@@ -1,6 +1,50 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.hello.world</groupId>
-  <artifactId>corba-hello-world</artifactId>
-  <version>1.0.0</version>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.hello.world</groupId>
+	<artifactId>corba-hello-world</artifactId>
+	<version>1.0.0</version>
+
+	<parent>
+		<groupId>com.onevue.corba</groupId>
+		<artifactId>onevue-server-configure</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	
+	<properties>
+		<java.version>11</java.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.onevue.spring</groupId>
+			<artifactId>spring-boot-starter-corba</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.onevue.spring</groupId>
+			<artifactId>onevue-corba</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>idlj-maven-plugin</artifactId>
+				<configuration>
+					<compiler>jacorb</compiler>
+					<failOnError>false</failOnError>
+					<includeDirs>
+						<includeDir>src/main/idl</includeDir>
+					</includeDirs>
+					<outputDirectory>
+						src/main/java
+					</outputDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

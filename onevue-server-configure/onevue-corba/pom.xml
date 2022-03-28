@@ -31,6 +31,34 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.glassfish.corba</groupId>
+			<artifactId>glassfish-corba-orb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.corba</groupId>
+			<artifactId>glassfish-corba-omgapi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.corba</groupId>
+			<artifactId>glassfish-corba-csiv2-idl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jacorb</groupId>
+			<artifactId>jacorb-omgapi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jacorb</groupId>
+			<artifactId>jacorb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jacorb</groupId>
+			<artifactId>jacorb-idl-compiler</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jacorb</groupId>
+			<artifactId>jacorb-services</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>

@@ -28,3 +28,10 @@ hs_err_pid*
 target/
 .classpath
 .project
+.factorypath
+/corba-hello-world/src/main/java/orb.db/counter
+/corba-hello-world/src/main/java/orb.db/NC0
+/corba-hello-world/src/main/java/orb.db/servers.db
+/corba-hello-world/src/main/idl/orb.db/counter
+/corba-hello-world/src/main/idl/orb.db/NC0
+/corba-hello-world/src/main/idl/orb.db/servers.db

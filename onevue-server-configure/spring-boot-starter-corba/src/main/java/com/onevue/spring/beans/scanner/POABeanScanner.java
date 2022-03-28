@@ -14,6 +14,5 @@ public class POABeanScanner {
 				false);
 		candidateComponentProvider.addIncludeFilter(new AssignableTypeFilter(Servant.class));
 		Set<BeanDefinition> beanDefinitions = candidateComponentProvider.findCandidateComponents(packages);
-		candidateComponentProvider.get
 	}
 }
