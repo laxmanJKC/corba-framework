@@ -17,6 +17,7 @@
 		<lombok.version>1.18.22</lombok.version>
 
 		<maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+		<copy-rename-maven-plugin.version>1.0.1</copy-rename-maven-plugin.version>
 		<idlj-maven-plugin.version>1.2.2</idlj-maven-plugin.version>
 
 		<jacorb.version>3.9</jacorb.version>
@@ -128,6 +129,11 @@
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>idlj-maven-plugin</artifactId>
 					<version>${idlj-maven-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>com.coderplus.maven.plugins</groupId>
+					<artifactId>copy-rename-maven-plugin</artifactId>
+					<version>${copy-rename-maven-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.springframework.boot</groupId>
