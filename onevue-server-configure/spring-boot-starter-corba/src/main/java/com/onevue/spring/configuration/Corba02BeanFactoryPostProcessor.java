@@ -20,13 +20,14 @@ import org.omg.PortableServer.POA;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.context.EnvironmentAware;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.util.CollectionUtils;
 
-public class CorbaBindingBeanFactoryPostProcessor implements BeanFactoryPostProcessor, EnvironmentAware {
-
-	private Environment environment;
+@Configuration
+public class Corba02BeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
@@ -68,10 +69,5 @@ public class CorbaBindingBeanFactoryPostProcessor implements BeanFactoryPostProc
 				e.printStackTrace();
 			}
 		}
-	}
-
-	@Override
-	public void setEnvironment(Environment environment) {
-		this.environment = environment;
 	}
 }

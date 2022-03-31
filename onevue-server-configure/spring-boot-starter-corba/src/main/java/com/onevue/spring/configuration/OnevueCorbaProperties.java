@@ -20,7 +20,7 @@ public class OnevueCorbaProperties {
 
 	private String orbSingletonClass;
 
-	private String orbInitialPort = "3700";
+	private String orbInitialPort = "1050";//"3700";
 
 	private String orbInitialHost;
 	
