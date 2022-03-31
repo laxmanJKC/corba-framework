@@ -2,7 +2,19 @@ package com.onevue.spring.constants;
 
 public class CorbaConstants {
 	
+	public static final String CORBA_ORB_BEAN = "ORBBean";
+	
 	public static final String CORBA_ROOT_POA = "RootPOA";
+	
+	public static final String CORBA_POA_TIE_SUFFIX = "POATie";
+	
+	public static final String CORBA_POA_IMPL_SUFFIX = "Impl";
+	
+	public static final String CORBA_OBJECT_SUFFIX = "_BindRef";
+	
+	public static final String EXPRESSION_CORBA_ORB_OBJ = "orb";
+	
+	public static final String EXPRESSION_CORBA_OBJECT_TIE = "_this(#"+EXPRESSION_CORBA_ORB_OBJ+")";
 	
 	public static final String CORBA_ORB_CLASS = "org.omg.CORBA.ORBClass";
 	

@@ -1,13 +1,22 @@
 package com.onevue.spring.boot;
 
+import static com.onevue.spring.constants.CorbaConstants.CORBA_ROOT_POA;
+import static com.onevue.spring.constants.CorbaConstants.CORBA_ORB_BEAN;
+
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.omg.CORBA.ORB;
+import org.omg.PortableServer.POA;
+import org.omg.PortableServer.POAManagerPackage.AdapterInactive;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.Assert;
+
+import com.onevue.spring.configuration.CorbaBindingBeanFactoryPostProcessor;
+import com.onevue.spring.configuration.CorbaTieBeanFactoryPostProcessor;
+import com.onevue.spring.exception.OnevuCorbaException;
 
 public class CorbaApplication {
 
@@ -29,8 +38,16 @@ public class CorbaApplication {
 	private ConfigurableApplicationContext run(String... args) {
 		Class<?>[] primaryClazz = primarySources.toArray(new Class<?>[primarySources.size()]);
 		ConfigurableApplicationContext ctx = SpringApplication.run(primaryClazz, args);
-		ORB orb = ctx.getBean(ORB.class);
-		orb.run();
+		ctx.addBeanFactoryPostProcessor(new CorbaTieBeanFactoryPostProcessor());
+		ctx.addBeanFactoryPostProcessor(new CorbaBindingBeanFactoryPostProcessor());
+		ORB orb = ctx.getBean(CORBA_ORB_BEAN, ORB.class);
+		POA rootPOA = ctx.getBean(CORBA_ROOT_POA, POA.class);
+		try {
+			rootPOA.the_POAManager().activate();
+		} catch (AdapterInactive e) {
+			throw new OnevuCorbaException("Activation of RootPOA failed as AdapterInactive "+ e.getMessage());
+		}
+		//orb.run();
 		return ctx;
 	}
 }

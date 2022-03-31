@@ -1,6 +1,7 @@
 package com.onevue.spring.beans.factory;
 
 import static com.onevue.spring.constants.CorbaConstants.CORBA_ORB_CLASS;
+import static com.onevue.spring.constants.CorbaConstants.CORBA_ORB_BEAN;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_ORB_INITIAL_HOST;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_ORB_INITIAL_PORT;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_ORB_SINGLETON_CLASS;
@@ -16,12 +17,16 @@ import org.springframework.stereotype.Service;
 
 import com.onevue.spring.configuration.OnevueCorbaProperties;
 
-@Service
+@Service(value = CORBA_ORB_BEAN)
 public class ORBFactoryBean implements InitializingBean, FactoryBean<ORB> {
 
 	private ORB orb;
 
 	private final OnevueCorbaProperties onevueCorbaProperties;
+	
+	public ORBFactoryBean() {
+		this(new OnevueCorbaProperties());
+	}
 
 	public ORBFactoryBean(@Lazy OnevueCorbaProperties onevueCorbaProperties) {
 		this.onevueCorbaProperties = onevueCorbaProperties;
@@ -49,7 +54,7 @@ public class ORBFactoryBean implements InitializingBean, FactoryBean<ORB> {
 	}
 
 	private Properties properties() {
-		Properties properties = new Properties();
+		Properties properties = System.getProperties();
 
 		// Check if ORBClass exist.
 		String orbClass = onevueCorbaProperties.getOrbClass();
