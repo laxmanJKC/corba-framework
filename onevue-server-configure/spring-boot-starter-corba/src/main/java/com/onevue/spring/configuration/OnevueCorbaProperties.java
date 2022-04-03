@@ -1,7 +1,5 @@
 package com.onevue.spring.configuration;
 
-import static com.onevue.spring.constants.CorbaConstants.CORBA_ONEVU;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,42 +11,27 @@ import lombok.Data;
 
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "onevue.corba", ignoreInvalidFields = true)
+@ConfigurationProperties(prefix = "onevue.corba")
 public class OnevueCorbaProperties {
 
 	private String orbClass;
 
 	private String orbSingletonClass;
 
-	private String orbInitialPort = "1050";//"3700";
+	private String orbInitialPort = "3700";
 
-	private String orbInitialHost;
-	
+	private String orbInitialHost = "localhost";
+
 	private String orbName;
-	
+
+	private List<String> orbArgs = new ArrayList<String>();
+
 	private List<CorbaBindingProperty> bindingProperties = new ArrayList<CorbaBindingProperty>();
 
-	private List<String> orbArgs;
-
-	public String[] getOrbArgs() {
-		if (!CollectionUtils.isEmpty(orbArgs)) {
-			return orbArgs.toArray(new String[orbArgs.size()]);
+	public String[] getOrbArguments() {
+		if (!CollectionUtils.isEmpty(getOrbArgs())) {
+			return new String[0];
 		}
-		return null;
-	}
-
-	public String getOrbName() {
-		return orbName;
-	}
-
-	public void setOrbName(String orbName) {
-		if (orbName == null) {
-			return ;
-		}
-		StringBuilder sb = new StringBuilder();
-		sb.append(CORBA_ONEVU);
-		sb.append(".");
-		sb.append(orbName.toLowerCase());
-		this.orbName = sb.toString();
+		return getOrbArgs().toArray(new String[getOrbArgs().size()]);
 	}
 }

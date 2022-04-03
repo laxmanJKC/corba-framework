@@ -18,32 +18,35 @@ import org.omg.CosNaming.NamingContextPackage.InvalidName;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.omg.PortableServer.POA;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.util.CollectionUtils;
 
 @Configuration
-public class Corba02BeanFactoryPostProcessor implements BeanFactoryPostProcessor {
+public class Corba02BeanFactoryPostProcessor implements BeanPostProcessor, ApplicationContextAware, InitializingBean {
 
-	@Override
-	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-		String beanNames[] = beanFactory.getBeanDefinitionNames();
+	private ApplicationContext applicationContext;
+
+	private BeanDefinitionRegistry registry;
+
+	public void configure() {
+		String beanNames[] = applicationContext.getBeanDefinitionNames();
 		List<String> bindingBeans = Arrays.asList(beanNames).stream().filter(p -> p.endsWith(CORBA_OBJECT_SUFFIX))
 				.collect(Collectors.toList());
 		if (CollectionUtils.isEmpty(bindingBeans)) {
 			return;
 		}
-		OnevueCorbaProperties onevueCorbaProperties = beanFactory.getBean(OnevueCorbaProperties.class);
+		OnevueCorbaProperties onevueCorbaProperties = applicationContext.getBean(OnevueCorbaProperties.class);
 		List<CorbaBindingProperty> corbaBindingProperties = onevueCorbaProperties.getBindingProperties();
-		ORB orb = beanFactory.getBean(CORBA_ORB_BEAN, ORB.class);
-		POA rootPOA = beanFactory.getBean(CORBA_ROOT_POA, POA.class);
-		NamingContextExt namingContextExt = beanFactory.getBean(CORBA_NAME_SERVICE, NamingContextExt.class);
+		ORB orb = applicationContext.getBean(CORBA_ORB_BEAN, ORB.class);
+		POA rootPOA = applicationContext.getBean(CORBA_ROOT_POA, POA.class);
+		NamingContextExt namingContextExt = applicationContext.getBean(CORBA_NAME_SERVICE, NamingContextExt.class);
 		for (String bindingBean : bindingBeans) {
-			org.omg.CORBA.Object corbaObjRef = beanFactory.getBean(bindingBean, org.omg.CORBA.Object.class);
+			org.omg.CORBA.Object corbaObjRef = applicationContext.getBean(bindingBean, org.omg.CORBA.Object.class);
 			Optional<CorbaBindingProperty> corbaBindPropertyOpt = corbaBindingProperties.stream()
 					.filter(p -> p.equals(bindingBean)).findFirst();
 			NameComponent[] nameComponents = null;
@@ -53,8 +56,8 @@ public class Corba02BeanFactoryPostProcessor implements BeanFactoryPostProcessor
 						|| corbaBindPropertyOpt.get().getExpression() == null) {
 					nameComponents = namingContextExt.to_name(bindingBean);
 				}
-				if (nameComponents ==null && corbaObjRef == null) {
-					return ;
+				if (nameComponents == null && corbaObjRef == null) {
+					return;
 				}
 				namingContextExt.rebind(nameComponents, corbaObjRef);
 
@@ -69,5 +72,16 @@ public class Corba02BeanFactoryPostProcessor implements BeanFactoryPostProcessor
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		this.registry = (BeanDefinitionRegistry) this.applicationContext.getAutowireCapableBeanFactory();
+		configure();
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
 	}
 }

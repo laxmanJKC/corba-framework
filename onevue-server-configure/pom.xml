@@ -22,7 +22,7 @@
 
 		<jacorb.version>3.9</jacorb.version>
 		<glassfish-corba.version>4.2.4</glassfish-corba.version>
-		<spring-boot.version>2.6.4</spring-boot.version>
+		<spring-boot.version>2.6.6</spring-boot.version>
 		<org.springframework.version>5.3.17</org.springframework.version>
 	</properties>
 

@@ -12,29 +12,28 @@ import java.util.Properties;
 import org.omg.CORBA.ORB;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.onevue.spring.configuration.OnevueCorbaProperties;
 
-@Service(value = CORBA_ORB_BEAN)
+@Component(value = CORBA_ORB_BEAN)
 public class ORBFactoryBean implements InitializingBean, FactoryBean<ORB> {
 
 	private ORB orb;
+	
 
 	private final OnevueCorbaProperties onevueCorbaProperties;
-	
-	public ORBFactoryBean() {
-		this(new OnevueCorbaProperties());
-	}
 
-	public ORBFactoryBean(@Lazy OnevueCorbaProperties onevueCorbaProperties) {
+	public ORBFactoryBean(OnevueCorbaProperties onevueCorbaProperties) {
 		this.onevueCorbaProperties = onevueCorbaProperties;
 	}
 
 	public void init() {
 		Properties properties = properties();
-		String[] orbArgs = onevueCorbaProperties.getOrbArgs();
+		String[] orbArgs = onevueCorbaProperties.getOrbArguments();
 		this.orb = ORB.init(orbArgs, properties);
 	}
 
@@ -80,6 +79,11 @@ public class ORBFactoryBean implements InitializingBean, FactoryBean<ORB> {
 			properties.put(CORBA_ORB_INITIAL_PORT, orbInitialPort);
 		}
 		return properties;
+	}
+
+	@Override
+	public String toString() {
+		return "ORBFactoryBean [orb=" + orb + ", onevueCorbaProperties=" + onevueCorbaProperties + "]";
 	}
 
 }
