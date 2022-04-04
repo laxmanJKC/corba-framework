@@ -11,7 +11,6 @@ import org.omg.CORBA.ORB;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAManagerPackage.AdapterInactive;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.env.EnvironmentPostProcessorApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.Assert;
 
@@ -37,9 +36,6 @@ public class CorbaApplication {
 	private ConfigurableApplicationContext run(String... args) {
 		Class<?>[] primaryClazz = primarySources.toArray(new Class<?>[primarySources.size()]);
 		ConfigurableApplicationContext ctx = SpringApplication.run(primaryClazz, args);
-		ctx.addApplicationListener(new EnvironmentPostProcessorApplicationListener());
-		// ctx.addBeanFactoryPostProcessor(new CorbaBindingBeanFactoryPostProcessor());
-		// ctx.addBeanFactoryPostProcessor(new CorbaTieBeanFactoryPostProcessor());
 		ORB orb = ctx.getBean(CORBA_ORB_BEAN, ORB.class);
 		POA rootPOA = ctx.getBean(CORBA_ROOT_POA, POA.class);
 		try {
