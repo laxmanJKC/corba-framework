@@ -19,8 +19,8 @@ import org.springframework.lang.NonNull;
 public abstract class AbstractCorbaBeanRegistry
 		implements ImportBeanDefinitionRegistrar, ResourceLoaderAware, EnvironmentAware {
 
-	private @SuppressWarnings("null") @NonNull ResourceLoader resourceLoader;
-	private @SuppressWarnings("null") @NonNull Environment environment;
+	private @NonNull ResourceLoader resourceLoader;
+	private @NonNull Environment environment;
 
 	@Override
 	public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
