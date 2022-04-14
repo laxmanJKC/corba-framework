@@ -1,6 +1,7 @@
 package com.onevue.spring.configuration;
 
 import static com.onevue.spring.constants.CorbaConstants.CORBA_NAME_SERVICE;
+import static com.onevue.spring.constants.CorbaConstants.CORBA_INITIAL_CONTEXT;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_OBJECT_SUFFIX;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_ORB_BEAN;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_ROOT_POA;
@@ -9,6 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.naming.Context;
 
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NameComponent;
@@ -45,6 +48,7 @@ public class Corba02BeanFactoryPostProcessor implements BeanPostProcessor, Appli
 		
 		ORB orb = applicationContext.getBean(CORBA_ORB_BEAN, ORB.class);
 		POA rootPOA = applicationContext.getBean(CORBA_ROOT_POA, POA.class);
+		Context context = applicationContext.getBean(CORBA_INITIAL_CONTEXT, Context.class);
 		NamingContextExt namingContextExt = applicationContext.getBean(CORBA_NAME_SERVICE, NamingContextExt.class);
 		
 		for (String bindingBean : bindingBeans) {

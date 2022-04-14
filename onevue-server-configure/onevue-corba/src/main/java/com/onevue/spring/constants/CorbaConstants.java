@@ -6,6 +6,8 @@ public class CorbaConstants {
 	
 	public static final String CORBA_ROOT_POA = "RootPOA";
 	
+	public static final String CORBA_INITIAL_CONTEXT = "RMI-Corba_Context";
+	
 	public static final String CORBA_POA_TIE_SUFFIX = "POATie";
 	
 	public static final String CORBA_RMI_TIE_SUFFIX = "_Tie";

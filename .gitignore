@@ -35,3 +35,4 @@ target/
 /corba-hello-world/src/main/idl/orb.db/counter
 /corba-hello-world/src/main/idl/orb.db/NC0
 /corba-hello-world/src/main/idl/orb.db/servers.db
+/demo/.mvn/
