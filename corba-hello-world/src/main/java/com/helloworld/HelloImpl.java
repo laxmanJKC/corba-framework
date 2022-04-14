@@ -1,10 +1,14 @@
 package com.helloworld;
 
 import org.omg.CORBA.ORB;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import HelloApp.HelloPOA;
 
+
 public class HelloImpl extends HelloPOA {
+	
+	@Autowired
 	private ORB orb;
 
 	public void setORB(ORB orb_val) {
@@ -20,4 +24,11 @@ public class HelloImpl extends HelloPOA {
 	public void shutdown() {
 		// orb.shutdown(false);
 	}
+
+	@Override
+	public String toString() {
+		return "HelloImpl [orb=" + orb + "]";
+	}
+	
+	
 }

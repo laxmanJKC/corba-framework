@@ -7,6 +7,7 @@ import org.omg.CORBA.SystemException;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAHelper;
+import org.omg.PortableServer.POAManagerPackage.AdapterInactive;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Lazy;
@@ -28,7 +29,7 @@ public class RootPOAFactoryBean implements InitializingBean, FactoryBean<POA> {
 		this.orb = orb;
 	}
 	
-	private void init() {
+	private void init() throws AdapterInactive {
 		Assert.notNull(orb, "ORB must be initialized, before initializing the ["+objectName+"]");
 		org.omg.CORBA.Object objRef = createRootPOACorbaObject();
 		this.rootPOA = POAHelper.narrow(objRef);

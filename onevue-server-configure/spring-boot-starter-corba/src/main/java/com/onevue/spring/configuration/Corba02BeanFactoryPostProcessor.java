@@ -42,9 +42,11 @@ public class Corba02BeanFactoryPostProcessor implements BeanPostProcessor, Appli
 		}
 		OnevueCorbaProperties onevueCorbaProperties = applicationContext.getBean(OnevueCorbaProperties.class);
 		List<CorbaBindingProperty> corbaBindingProperties = onevueCorbaProperties.getBindingProperties();
+		
 		ORB orb = applicationContext.getBean(CORBA_ORB_BEAN, ORB.class);
 		POA rootPOA = applicationContext.getBean(CORBA_ROOT_POA, POA.class);
 		NamingContextExt namingContextExt = applicationContext.getBean(CORBA_NAME_SERVICE, NamingContextExt.class);
+		
 		for (String bindingBean : bindingBeans) {
 			org.omg.CORBA.Object corbaObjRef = applicationContext.getBean(bindingBean, org.omg.CORBA.Object.class);
 			Optional<CorbaBindingProperty> corbaBindPropertyOpt = corbaBindingProperties.stream()
@@ -62,7 +64,6 @@ public class Corba02BeanFactoryPostProcessor implements BeanPostProcessor, Appli
 				namingContextExt.rebind(nameComponents, corbaObjRef);
 
 			} catch (NotFound e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (CannotProceed e) {
 				// TODO Auto-generated catch block

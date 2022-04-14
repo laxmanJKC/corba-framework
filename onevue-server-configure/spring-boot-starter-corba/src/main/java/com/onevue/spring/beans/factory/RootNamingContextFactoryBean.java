@@ -7,8 +7,10 @@ import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.BindingHolder;
 import org.omg.CosNaming.BindingIteratorHolder;
 import org.omg.CosNaming.BindingListHolder;
+import org.omg.CosNaming.NamingContext;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
+import org.omg.CosNaming.NamingContextHelper;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Lazy;
@@ -81,34 +83,20 @@ public class RootNamingContextFactoryBean implements InitializingBean, FactoryBe
 	 */
 	public void clearRootNamingContext(String root, String[] omissions) {
 
-		try {
-			BindingIteratorHolder bi = new BindingIteratorHolder();
-			BindingListHolder bl = new BindingListHolder();
-			// Get the list of bindings
-			NamingContextExt pruneNC = NamingContextExtHelper.narrow(namingContext.resolve_str(root));
-			pruneNC.list(0, bl, bi);
-			BindingHolder b = new BindingHolder();
-			if (bi.value != null) {
-				// Step through the bindings and delete them all
-				while (bi.value.next_one(b)) {
-					int i;
-					if (omissions != null) {
-						for (i = 0; i < omissions.length; i++) {
-							if (pruneNC.to_string(b.value.binding_name).compareTo(omissions[i]) == 0) {
-								break;
-							}
-						}
-						if (i == omissions.length) {
-							pruneNC.unbind(b.value.binding_name);
-						}
-					} else {
-						pruneNC.unbind(b.value.binding_name);
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		/*
+		 * try { BindingIteratorHolder bi = new BindingIteratorHolder();
+		 * BindingListHolder bl = new BindingListHolder(); // Get the list of bindings
+		 * NamingContextExt pruneNC =
+		 * NamingContextExtHelper.narrow(namingContext.resolve_str(root));
+		 * pruneNC.list(0, bl, bi); BindingHolder b = new BindingHolder(); if (bi.value
+		 * != null) { // Step through the bindings and delete them all while
+		 * (bi.value.next_one(b)) { int i; if (omissions != null) { for (i = 0; i <
+		 * omissions.length; i++) { if
+		 * (pruneNC.to_string(b.value.binding_name).compareTo(omissions[i]) == 0) {
+		 * break; } } if (i == omissions.length) { pruneNC.unbind(b.value.binding_name);
+		 * } } else { pruneNC.unbind(b.value.binding_name); } } } } catch (Exception e)
+		 * { e.printStackTrace(); }
+		 */
 	}
 
 	public String getName() {
@@ -130,7 +118,7 @@ public class RootNamingContextFactoryBean implements InitializingBean, FactoryBe
 
 	@Override
 	public Class<?> getObjectType() {
-		return NamingContextExt.class;
+		return NamingContext.class;
 	}
 
 	@Override

@@ -8,19 +8,18 @@ import com.onevue.spring.enums.POAPolicy;
 import lombok.Data;
 
 @Data
-public class CorbaBindingProperty {
-
+public class CorbaPOAProperty {
+	
 	private String beanName;
 
 	private String poaName;
-
-	private String nameComponent;
-
-	private String expression;
+	
+	private String poaId;
 
 	private boolean activate = true;
 	
 	private boolean rootPOAManagerNeeded = true;
 
 	private List<POAPolicy> poaPolicy = new ArrayList<POAPolicy>();
+
 }

@@ -1,6 +1,7 @@
 package com.onevue.spring.configuration;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -38,13 +39,15 @@ public abstract class AbstractCorbaBeanRegistry
 		List<String> packageList = streamable.toList();
 		String[] packages = packageList.toArray(new String[packageList.size()]);
 		ClassPathBeanDefinitionScanner classPathBeanDefinitionScanner = new ClassPathBeanDefinitionScanner(registry);
-		classPathBeanDefinitionScanner.addIncludeFilter(getIncludeFilter());
+		if (getIncludeFilter()!=null && getIncludeFilter().length > 0) {
+			Arrays.asList(getIncludeFilter()).forEach(filter -> classPathBeanDefinitionScanner.addIncludeFilter(filter));
+		}
 		classPathBeanDefinitionScanner.scan(packages);
 	}
 
 	protected abstract Class<? extends Annotation> getAnnotation();
 
-	protected abstract TypeFilter getIncludeFilter();
+	protected abstract TypeFilter[] getIncludeFilter();
 
 	@Override
 	public void setResourceLoader(ResourceLoader resourceLoader) {

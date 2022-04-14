@@ -20,8 +20,11 @@
 		<copy-rename-maven-plugin.version>1.0.1</copy-rename-maven-plugin.version>
 		<idlj-maven-plugin.version>1.2.2</idlj-maven-plugin.version>
 
+		<com.sun.corba.orb.version>9.1</com.sun.corba.orb.version>
+		<javax.rmi.version>1.0.6.Final</javax.rmi.version>
 		<jacorb.version>3.9</jacorb.version>
 		<glassfish-corba.version>4.2.4</glassfish-corba.version>
+
 		<spring-boot.version>2.6.6</spring-boot.version>
 		<org.springframework.version>5.3.17</org.springframework.version>
 	</properties>
@@ -33,6 +36,16 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.jboss.spec.javax.rmi</groupId>
+				<artifactId>jboss-rmi-api_1.0_spec</artifactId>
+				<version>${javax.rmi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.corba</groupId>
+				<artifactId>orb</artifactId>
+				<version>${com.sun.corba.orb.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.jacorb</groupId>
 				<artifactId>jacorb-parent</artifactId>
@@ -58,6 +71,11 @@
 			<dependency>
 				<groupId>org.glassfish.corba</groupId>
 				<artifactId>glassfish-corba-omgapi</artifactId>
+				<version>${glassfish-corba.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.corba</groupId>
+				<artifactId>idlj</artifactId>
 				<version>${glassfish-corba.version}</version>
 			</dependency>
 			<dependency>

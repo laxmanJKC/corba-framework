@@ -29,7 +29,7 @@ public class OnevueCorbaProperties {
 	private List<CorbaBindingProperty> bindingProperties = new ArrayList<CorbaBindingProperty>();
 
 	public String[] getOrbArguments() {
-		if (!CollectionUtils.isEmpty(getOrbArgs())) {
+		if (CollectionUtils.isEmpty(getOrbArgs())) {
 			return new String[0];
 		}
 		return getOrbArgs().toArray(new String[getOrbArgs().size()]);

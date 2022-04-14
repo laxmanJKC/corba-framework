@@ -7,6 +7,8 @@ import static com.onevue.spring.constants.CorbaConstants.CORBA_ORB_INITIAL_PORT;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_ORB_SINGLETON_CLASS;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.omg.CORBA.ORB;
@@ -54,11 +56,13 @@ public class ORBFactoryBean implements InitializingBean, FactoryBean<ORB> {
 
 	private Properties properties() {
 		Properties properties = System.getProperties();
+		List<String> args = new ArrayList<String>();
 
 		// Check if ORBClass exist.
 		String orbClass = onevueCorbaProperties.getOrbClass();
 		if (!isBlank(orbClass)) {
 			properties.put(CORBA_ORB_CLASS, orbClass);
+			args.add(CORBA_ORB_SINGLETON_CLASS+"="+orbClass);
 		}
 
 		// Check if ORBSingletonClass exist
@@ -78,6 +82,10 @@ public class ORBFactoryBean implements InitializingBean, FactoryBean<ORB> {
 		if (!isBlank(orbInitialPort)) {
 			properties.put(CORBA_ORB_INITIAL_PORT, orbInitialPort);
 		}
+		args.add("-ORBDefaultInitRef");
+		args.add("NameService=IOR::localhost:1050");
+		properties.put("ORBDefaultInitRef", "NameService=corbaname::localhost:1050/");
+		//onevueCorbaProperties.setOrbArgs(args);
 		return properties;
 	}
 
