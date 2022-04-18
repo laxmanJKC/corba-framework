@@ -70,7 +70,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-		<!-- 	<plugin>
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>idlj-maven-plugin</artifactId>
 				<executions>
@@ -90,7 +90,7 @@
 						src/main/java
 					</outputDirectory>
 				</configuration>
-			</plugin> -->
+			</plugin>
 		</plugins>
 	</build>
 </project>

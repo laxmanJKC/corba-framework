@@ -10,9 +10,11 @@ public class CorbaConstants {
 	
 	public static final String CORBA_POA_TIE_SUFFIX = "POATie";
 	
-	public static final String CORBA_RMI_TIE_SUFFIX = "_Tie";
+	public static final String CORBA_GLASSFISH_TIE_SUFFIX = "_Tie";
 	
 	public static final String CORBA_POA_IMPL_SUFFIX = "Impl";
+	
+	public static final String CORBA_POA_OPERATIONS_SUFFIX = CORBA_POA_IMPL_SUFFIX + "Operations";
 	
 	public static final String CORBA_OBJECT_SUFFIX = "_BindRef";
 	

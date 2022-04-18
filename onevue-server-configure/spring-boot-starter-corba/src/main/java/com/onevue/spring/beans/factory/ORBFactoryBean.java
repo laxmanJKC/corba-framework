@@ -14,10 +14,7 @@ import java.util.Properties;
 import org.omg.CORBA.ORB;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import com.onevue.spring.configuration.OnevueCorbaProperties;
 

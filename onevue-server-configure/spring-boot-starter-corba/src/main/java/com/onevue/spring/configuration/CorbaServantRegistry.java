@@ -4,7 +4,6 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.omg.CORBA.portable.IDLEntity;
 import org.omg.PortableServer.Servant;
 import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
@@ -23,7 +22,6 @@ public class CorbaServantRegistry extends AbstractCorbaBeanRegistry {
 	protected TypeFilter[] getIncludeFilter() {
 		List<TypeFilter> typeFilters = new ArrayList<TypeFilter>();
 		typeFilters.add(new AssignableTypeFilter(Servant.class));
-		typeFilters.add(new AssignableTypeFilter(IDLEntity.class));
 		typeFilters.add(new AssignableTypeFilter(PortableRemoteObject.class));
 		return typeFilters.toArray(new TypeFilter[typeFilters.size()]);
 	}

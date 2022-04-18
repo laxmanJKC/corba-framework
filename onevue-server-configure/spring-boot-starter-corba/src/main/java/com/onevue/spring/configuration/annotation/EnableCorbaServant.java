@@ -7,6 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ComponentScan.Filter;
 
 import com.onevue.spring.configuration.CorbaServantRegistry;
 
@@ -21,4 +22,6 @@ public @interface EnableCorbaServant {
 	String[] basePackages() default {};
 
 	Class<?>[] basePackageClasses() default {};
+	
+	Filter[] includeFilters() default {};
 }

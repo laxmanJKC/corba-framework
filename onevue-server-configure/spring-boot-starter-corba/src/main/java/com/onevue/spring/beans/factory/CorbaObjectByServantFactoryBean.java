@@ -3,6 +3,8 @@ package com.onevue.spring.beans.factory;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_OBJECT_SUFFIX;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_POA_IMPL_SUFFIX;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_POA_TIE_SUFFIX;
+import static com.onevue.spring.constants.CorbaConstants.CORBA_POA_OPERATIONS_SUFFIX;
+import static com.onevue.spring.constants.CorbaConstants.CORBA_GLASSFISH_TIE_SUFFIX;
 import static com.onevue.spring.util.OnevueSpringExpressionUtils.corbaObjectByTie;
 
 import org.omg.CORBA.ORB;
@@ -58,6 +60,17 @@ public class CorbaObjectByServantFactoryBean implements InitializingBean, BeanDe
 		this.corbaObjectBeanName = StringUtils.replace(beanName, CORBA_POA_IMPL_SUFFIX, CORBA_OBJECT_SUFFIX);
 	}
 	
+	public void prepareForOperations(String beanName, BeanDefinitionRegistry registry) {
+		Object operations = context.getBean(beanName);
+		String tieOperationBeanName = StringUtils.replace(beanName, CORBA_POA_OPERATIONS_SUFFIX, CORBA_GLASSFISH_TIE_SUFFIX);
+		BeanDefinition beanDefinition = registry.getBeanDefinition(tieOperationBeanName);
+		beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0, operations);
+
+		this.corbaObjectBeanName = StringUtils.replace(beanName, CORBA_POA_OPERATIONS_SUFFIX, CORBA_OBJECT_SUFFIX);
+		this.corbaObjectRef = context.getBean(tieOperationBeanName);
+		registry.removeBeanDefinition(tieOperationBeanName);
+	}
+	
 	public void prepareForTie(String beanName, BeanDefinitionRegistry registry) {
 		String servantBeanName = StringUtils.replace(beanName, CORBA_POA_TIE_SUFFIX, CORBA_POA_IMPL_SUFFIX);
 		this.servant = context.getBean(servantBeanName, Servant.class);
@@ -92,7 +105,6 @@ public class CorbaObjectByServantFactoryBean implements InitializingBean, BeanDe
 	public void afterPropertiesSet() throws Exception {
 		Assert.notNull(context, "ApplicationContext can't be null");
 		Assert.notNull(rootPOA, "Root POA can't be null");
-		Assert.notNull(servant, "Servant can't be null");
 		registerCorbaBean();
 	}
 

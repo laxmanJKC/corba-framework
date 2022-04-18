@@ -5,7 +5,6 @@ import static com.onevue.spring.constants.CorbaConstants.CORBA_INITIAL_CONTEXT;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import org.omg.CORBA.ORB;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;

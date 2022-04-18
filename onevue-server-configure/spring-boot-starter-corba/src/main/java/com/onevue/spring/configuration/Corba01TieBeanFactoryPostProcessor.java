@@ -3,8 +3,9 @@ package com.onevue.spring.configuration;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_OBJECT_SUFFIX;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_ORB_BEAN;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_POA_IMPL_SUFFIX;
+import static com.onevue.spring.constants.CorbaConstants.CORBA_POA_OPERATIONS_SUFFIX;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_POA_TIE_SUFFIX;
-import static com.onevue.spring.constants.CorbaConstants.CORBA_RMI_TIE_SUFFIX;
+import static com.onevue.spring.constants.CorbaConstants.CORBA_GLASSFISH_TIE_SUFFIX;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_ROOT_POA;
 
 import java.rmi.Remote;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.omg.CORBA.ORB;
 import org.omg.PortableServer.POA;
@@ -44,14 +44,18 @@ public class Corba01TieBeanFactoryPostProcessor
 		ORB orb = applicationContext.getBean(CORBA_ORB_BEAN, ORB.class);
 		POA rootPOA = applicationContext.getBean(CORBA_ROOT_POA, POA.class);
 		for (String beanName : corbaBeanNames) {
-			if (beanName.endsWith(CORBA_POA_IMPL_SUFFIX)) {
+			if (beanName.endsWith(CORBA_POA_OPERATIONS_SUFFIX)) {
+				CorbaObjectByServantFactoryBean corbaObjectRef = new CorbaObjectByServantFactoryBean(context, orb, rootPOA);
+				corbaObjectRef.prepareForOperations(beanName, context);
+				corbaObjectRef.afterPropertiesSet();
+			} else if (beanName.endsWith(CORBA_POA_IMPL_SUFFIX)) {
 				CorbaObjectByServantFactoryBean corbaObjectRef = new CorbaObjectByServantFactoryBean(context, orb, rootPOA);
 				corbaObjectRef.prepare(beanName, context);
 				corbaObjectRef.afterPropertiesSet();
-			}else if (beanName.endsWith(CORBA_RMI_TIE_SUFFIX)) {
-				String servantBeanName = StringUtils.replace(beanName, CORBA_RMI_TIE_SUFFIX, "");
+			} else if (beanName.endsWith(CORBA_GLASSFISH_TIE_SUFFIX)) {
+				String servantBeanName = StringUtils.replace(beanName, CORBA_GLASSFISH_TIE_SUFFIX, CORBA_POA_IMPL_SUFFIX);
 				Remote servant = applicationContext.getBean(servantBeanName, Remote.class);
-				String corbaRef = StringUtils.replace(beanName, CORBA_RMI_TIE_SUFFIX, "") + CORBA_OBJECT_SUFFIX;
+				String corbaRef = StringUtils.replace(beanName, CORBA_GLASSFISH_TIE_SUFFIX, CORBA_OBJECT_SUFFIX);
 				//context.registerBean(corbaRef, Object.class, () -> Util.getTie(servant));
 			} else if (beanName.endsWith(CORBA_POA_TIE_SUFFIX)) {
 				CorbaObjectByServantFactoryBean corbaObjectRef = new CorbaObjectByServantFactoryBean(context, orb, rootPOA);
@@ -77,11 +81,11 @@ public class Corba01TieBeanFactoryPostProcessor
 			return Collections.emptyList();
 		}
 		List<String> uniqueBeanNames = new ArrayList<String>();
-		Stream<String> listBeanNames = Arrays.asList(beanNames).stream();
+		List<String> listBeanNames = Arrays.asList(beanNames);
 		for (String beanName: beanNames) {
-			if (beanName.endsWith(CORBA_POA_IMPL_SUFFIX) && listBeanNames.anyMatch(p -> p.endsWith(CORBA_POA_TIE_SUFFIX))) {
+			if ((beanName.endsWith(CORBA_POA_IMPL_SUFFIX) && listBeanNames.stream().anyMatch(p -> p.endsWith(CORBA_POA_TIE_SUFFIX))) || (beanName.endsWith(CORBA_GLASSFISH_TIE_SUFFIX) && listBeanNames.stream().anyMatch(p -> p.endsWith(CORBA_POA_OPERATIONS_SUFFIX)))) {
 				continue;
-			} else if (beanName.endsWith(CORBA_POA_IMPL_SUFFIX) || beanName.endsWith(CORBA_RMI_TIE_SUFFIX) || beanName.endsWith(CORBA_POA_TIE_SUFFIX)) {
+			} else if (beanName.endsWith(CORBA_POA_IMPL_SUFFIX) || beanName.endsWith(CORBA_GLASSFISH_TIE_SUFFIX) || beanName.endsWith(CORBA_POA_TIE_SUFFIX) || beanName.endsWith(CORBA_POA_OPERATIONS_SUFFIX)) {
 				uniqueBeanNames.add(beanName);
 			}
 		}
