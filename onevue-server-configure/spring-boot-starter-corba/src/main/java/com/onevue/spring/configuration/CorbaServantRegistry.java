@@ -4,12 +4,13 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.rmi.PortableRemoteObject;
+
 import org.omg.PortableServer.Servant;
 import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
 
 import com.onevue.spring.configuration.annotation.EnableCorbaServant;
-import com.sun.corba.ee.impl.javax.rmi.PortableRemoteObject;
 
 public class CorbaServantRegistry extends AbstractCorbaBeanRegistry {
 
