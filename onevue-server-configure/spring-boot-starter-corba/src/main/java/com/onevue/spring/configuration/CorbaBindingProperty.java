@@ -16,7 +16,7 @@ public class CorbaBindingProperty {
 
 	private String beanName;
 
-	private String poaName;
+	private String adapterName;
 	
 	private String publishRef;
 
@@ -40,5 +40,9 @@ public class CorbaBindingProperty {
 			policies.add(poaPolicy.createPolicy(rootPOA, poaPolicy));
 		}
 		return policies.toArray(new Policy[policies.size()]);
+	}
+	
+	public byte[] getActivatedId() {
+		return beanName.getBytes();
 	}
 }
