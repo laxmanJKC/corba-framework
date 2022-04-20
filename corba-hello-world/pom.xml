@@ -4,7 +4,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.hello.world</groupId>
 	<artifactId>corba-hello-world</artifactId>
-	<version>1.0.0</version>
 
 	<parent>
 		<groupId>com.onevue.corba</groupId>
@@ -14,17 +13,21 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.onevue.spring</groupId>
 			<artifactId>spring-boot-starter-corba</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.onevue.spring</groupId>
 			<artifactId>onevue-corba</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.helloworld</groupId>
+			<artifactId>corba-helloworld-rmi</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
@@ -69,27 +72,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>idlj-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<compiler>glassfish</compiler>
-					<failOnError>false</failOnError>
-					<includeDirs>
-						<includeDir>src/main/idl</includeDir>
-					</includeDirs>
-					<outputDirectory>
-						src/main/java
-					</outputDirectory>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

@@ -19,6 +19,8 @@ public class CorbaPOAProperty {
 	private boolean activate = true;
 	
 	private boolean rootPOAManagerNeeded = true;
+	
+	private String rmiServiceName;
 
 	private List<POAPolicy> poaPolicy = new ArrayList<POAPolicy>();
 
