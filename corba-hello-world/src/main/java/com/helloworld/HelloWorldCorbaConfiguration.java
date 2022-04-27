@@ -11,11 +11,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 
-import HelloApp.HelloOperations;
-
 @Configuration
 @ComponentScan(basePackages = { "com.helloworld", "HelloApp" }, includeFilters = {
-		@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {Servant.class, PortableRemoteObject.class, HelloOperations.class})})
+		@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {Servant.class, PortableRemoteObject.class})})
 public class HelloWorldCorbaConfiguration {
 	
 	public static final Class<?> [] DEFAULT_ASSIGNABLE_TYPE_CLASSES = new Class[] {
@@ -24,7 +22,6 @@ public class HelloWorldCorbaConfiguration {
 	};
 	
 	public static final Class<?> [] DEFAULT_APPLICATION_ASSIGNABLE_TYPE_CLASSES = new Class[] {
-			HelloImplOperations.class
 	};
 	
 	public static final List<Class<?>> ACTIVE_ASSIGNABLE_TYPE_CLASSES_LIST = new ArrayList<Class<?>>();

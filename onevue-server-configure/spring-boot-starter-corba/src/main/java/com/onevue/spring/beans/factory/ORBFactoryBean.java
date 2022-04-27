@@ -4,6 +4,8 @@ import static com.onevue.spring.constants.CorbaConstants.CORBA_ORB_CLASS;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_ORB_BEAN;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_ORB_INITIAL_HOST;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_ORB_INITIAL_PORT;
+import static com.onevue.spring.constants.CorbaConstants.CORBA_CONTEXT_FACTORY_INTIAL_KEY;
+import static com.onevue.spring.constants.CorbaConstants.CORBA_CONTEXT_FACTORY_INITIAL_URL_KEY;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_ORB_SINGLETON_CLASS;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -15,6 +17,7 @@ import org.omg.CORBA.ORB;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.onevue.spring.configuration.OnevueCorbaProperties;
 
@@ -22,7 +25,6 @@ import com.onevue.spring.configuration.OnevueCorbaProperties;
 public class ORBFactoryBean implements InitializingBean, FactoryBean<ORB> {
 
 	private ORB orb;
-	
 
 	private final OnevueCorbaProperties onevueCorbaProperties;
 
@@ -79,10 +81,14 @@ public class ORBFactoryBean implements InitializingBean, FactoryBean<ORB> {
 		if (!isBlank(orbInitialPort)) {
 			properties.put(CORBA_ORB_INITIAL_PORT, orbInitialPort);
 		}
-		args.add("-ORBDefaultInitRef");
-		args.add("NameService=IOR::localhost:1050");
-		properties.put("ORBDefaultInitRef", "NameService=corbaname::localhost:1050/");
-		//onevueCorbaProperties.setOrbArgs(args);
+		if (!StringUtils.isEmpty(onevueCorbaProperties.getContextFactoryInitial()) && !StringUtils.isEmpty(orbInitialHost) && !StringUtils.isEmpty(orbInitialPort)) {
+			StringBuilder protocol = new StringBuilder();
+			protocol.append(onevueCorbaProperties.getContextProtocol()).append("://").append(onevueCorbaProperties.getOrbInitialHost()).append(":").append(onevueCorbaProperties.getOrbInitialPort());
+			System.getProperties().put(CORBA_CONTEXT_FACTORY_INITIAL_URL_KEY, protocol.toString());
+			System.getProperties().put(CORBA_CONTEXT_FACTORY_INTIAL_KEY, onevueCorbaProperties.getContextFactoryInitial());
+			properties.put(CORBA_CONTEXT_FACTORY_INITIAL_URL_KEY, protocol.toString());
+			properties.put(CORBA_CONTEXT_FACTORY_INTIAL_KEY, onevueCorbaProperties.getContextFactoryInitial());
+		}
 		return properties;
 	}
 

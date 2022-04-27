@@ -27,7 +27,7 @@
 		<glassfish-corba.version>4.2.4</glassfish-corba.version>
 
 		<spring-boot.version>2.6.6</spring-boot.version>
-		<org.springframework.version>5.3.17</org.springframework.version>
+		<org.springframework.version>5.3.18</org.springframework.version>
 	</properties>
 
 	<modules>
@@ -37,6 +37,22 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.transaction</groupId>
+				<artifactId>jta</artifactId>
+				<version>1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss</groupId>
+				<artifactId>jdk-misc</artifactId>
+				<version>3.Final</version>
+			</dependency>
 			<dependency>
 				<groupId>org.jboss.spec.javax.rmi</groupId>
 				<artifactId>jboss-rmi-api_1.0_spec</artifactId>

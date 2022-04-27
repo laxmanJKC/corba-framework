@@ -12,6 +12,15 @@
 	</parent>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- <dependency> <groupId>javax.transaction</groupId> <artifactId>jta</artifactId> 
+			</dependency> <dependency> <groupId>org.jboss</groupId> <artifactId>jdk-misc</artifactId> 
+			</dependency> -->
 		<!-- Spring Framework -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -31,10 +40,8 @@
 		</dependency>
 
 		<!-- CORBA Dependency -->
-		<dependency>
-			<groupId>org.jboss.spec.javax.rmi</groupId>
-			<artifactId>jboss-rmi-api_1.0_spec</artifactId>
-		</dependency>
+		<!-- <dependency> <groupId>org.jboss.spec.javax.rmi</groupId> <artifactId>jboss-rmi-api_1.0_spec</artifactId> 
+			</dependency> -->
 		<dependency>
 			<groupId>org.glassfish.corba</groupId>
 			<artifactId>glassfish-corba-orb</artifactId>

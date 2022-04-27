@@ -1,5 +1,7 @@
 package com.onevue.spring.constants;
 
+import org.glassfish.jndi.cosnaming.CNCtxFactory;
+
 public class CorbaConstants {
 	
 	public static final String CORBA_ORB_BEAN = "ORBBean";
@@ -11,6 +13,12 @@ public class CorbaConstants {
 	public static final String CORBA_POA_TIE_SUFFIX = "POATie";
 	
 	public static final String CORBA_GLASSFISH_TIE_SUFFIX = "_Tie";
+	
+	public static final String CORBA_CONTEXT_FACTORY_INTIAL_KEY = "java.naming.factory.initial";
+	
+	public static final String CORBA_CONTEXT_FACTORY_INITIAL_URL_KEY = "java.naming.provider.url";
+	
+	public static final String CORBA_CONTEXT_FACTORY_INTIAL_VALUE = CNCtxFactory.class.getName();// "com.sun.jndi.cosnaming.CNCtxFactory";
 	
 	public static final String CORBA_POA_IMPL_SUFFIX = "Impl";
 	

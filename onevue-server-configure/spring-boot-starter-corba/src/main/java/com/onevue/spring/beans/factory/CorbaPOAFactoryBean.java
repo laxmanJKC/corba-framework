@@ -5,7 +5,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 
-import com.onevue.spring.configuration.CorbaBindingProperty;
+import com.onevue.spring.model.CorbaBindingProperty;
 
 public class CorbaPOAFactoryBean implements InitializingBean, FactoryBean<POA>  {
 	

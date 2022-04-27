@@ -13,14 +13,16 @@ import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.CosNaming.NamingContextHelper;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+@ConditionalOnProperty(name = "onevue.corba.corba-registry", havingValue = "namingcontext")
 @Service(value = CORBA_NAME_SERVICE)
 public class RootNamingContextFactoryBean implements InitializingBean, FactoryBean<NamingContextExt> {
 
 	private NamingContextExt namingContext;
-
+	
 	/**
 	 * The {@link org.omg.CORBA.ORB} used to resolving the
 	 * {@link org.omg.CosNaming.NamingContextExt} root naming context

@@ -1,4 +1,4 @@
-package com.onevue.spring.configuration;
+package com.onevue.spring.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +21,14 @@ public class CorbaBindingProperty {
 	private String publishRef;
 
 	private String nameComponent;
-
+	
 	private String expression;
+	
+	private String corbaBeanRef;
 
 	private boolean activate = true;
 
-	private boolean rootPOAManagerNeeded = true;
+	private boolean rootPoaManagerNeeded = true;
 
 	private List<POAPolicy> poaPolicy = new ArrayList<POAPolicy>();
 
@@ -42,7 +44,7 @@ public class CorbaBindingProperty {
 		return policies.toArray(new Policy[policies.size()]);
 	}
 	
-	public byte[] getActivatedId() {
-		return beanName.getBytes();
+	public String getCorbaBeanRef() {
+		return corbaBeanRef;
 	}
 }

@@ -1,25 +1,22 @@
 package com.onevue.spring.configuration;
 
-import static com.onevue.spring.constants.CorbaConstants.CORBA_NAME_SERVICE;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_INITIAL_CONTEXT;
+import static com.onevue.spring.constants.CorbaConstants.CORBA_NAME_SERVICE;
 import static com.onevue.spring.constants.CorbaConstants.CORBA_OBJECT_SUFFIX;
-import static com.onevue.spring.constants.CorbaConstants.CORBA_ORB_BEAN;
-import static com.onevue.spring.constants.CorbaConstants.CORBA_ROOT_POA;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.naming.Context;
 
-import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.omg.CosNaming.NamingContextPackage.InvalidName;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
-import org.omg.PortableServer.POA;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -28,6 +25,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
+
+import com.onevue.spring.enums.CorbaRegistry;
+import com.onevue.spring.model.CorbaBindingProperty;
+import com.onevue.spring.util.CorbaBindUtils;
 
 @Configuration
 public class Corba02BeanFactoryPostProcessor implements BeanPostProcessor, ApplicationContextAware, InitializingBean {
@@ -45,28 +46,44 @@ public class Corba02BeanFactoryPostProcessor implements BeanPostProcessor, Appli
 		}
 		OnevueCorbaProperties onevueCorbaProperties = applicationContext.getBean(OnevueCorbaProperties.class);
 		List<CorbaBindingProperty> corbaBindingProperties = onevueCorbaProperties.getBindingProperties();
-		
-		ORB orb = applicationContext.getBean(CORBA_ORB_BEAN, ORB.class);
-		POA rootPOA = applicationContext.getBean(CORBA_ROOT_POA, POA.class);
-		Context context = applicationContext.getBean(CORBA_INITIAL_CONTEXT, Context.class);
-		NamingContextExt namingContextExt = applicationContext.getBean(CORBA_NAME_SERVICE, NamingContextExt.class);
-		
+
+		Supplier<Object> supplierObjRef = null;
+
+		switch (onevueCorbaProperties.getCorbaRegistry()) {
+		case CONTEXT:
+			Context contextRef = applicationContext.getBean(CORBA_INITIAL_CONTEXT, Context.class);
+			supplierObjRef = () -> contextRef;
+			break;
+
+		default:
+			NamingContextExt namingContextExtRef = applicationContext.getBean(CORBA_NAME_SERVICE, NamingContextExt.class); 
+			supplierObjRef = () -> namingContextExtRef;
+			break;
+		}
+
 		for (String bindingBean : bindingBeans) {
 			org.omg.CORBA.Object corbaObjRef = applicationContext.getBean(bindingBean, org.omg.CORBA.Object.class);
 			Optional<CorbaBindingProperty> corbaBindPropertyOpt = corbaBindingProperties.stream()
-					.filter(p -> p.equals(bindingBean)).findFirst();
+					.filter(p -> p.getCorbaBeanRef() != null && p.getCorbaBeanRef().equals(bindingBean)).findFirst();
 			NameComponent[] nameComponents = null;
 			try {
-				if (corbaBindPropertyOpt.isEmpty()
-						|| "to_name".equalsIgnoreCase(corbaBindPropertyOpt.get().getNameComponent())
-						|| corbaBindPropertyOpt.get().getExpression() == null) {
-					nameComponents = namingContextExt.to_name(bindingBean);
+				if (corbaBindPropertyOpt.isPresent()
+						&& CorbaRegistry.CONTEXT == onevueCorbaProperties.getCorbaRegistry()) {
+					Context context = (Context) supplierObjRef.get();
+					CorbaBindingProperty bindingProperty = corbaBindPropertyOpt.get();
+					CorbaBindUtils.contextBinding(context, bindingProperty, corbaObjRef);
+				} else if (CorbaRegistry.NAMING_CONTEXT == onevueCorbaProperties.getCorbaRegistry()) {
+					NamingContextExt namingContextExt = (NamingContextExt) supplierObjRef.get();
+					if (corbaBindPropertyOpt.isEmpty() || (corbaBindPropertyOpt.isPresent()
+							&& ("to_name".equalsIgnoreCase(corbaBindPropertyOpt.get().getNameComponent())
+									|| corbaBindPropertyOpt.get().getExpression() == null))) {
+						nameComponents = namingContextExt.to_name(bindingBean);
+					}
+					if (nameComponents == null && corbaObjRef == null) {
+						return;
+					}
+					namingContextExt.rebind(nameComponents, corbaObjRef);
 				}
-				if (nameComponents == null && corbaObjRef == null) {
-					return;
-				}
-				namingContextExt.rebind(nameComponents, corbaObjRef);
-
 			} catch (NotFound e) {
 				e.printStackTrace();
 			} catch (CannotProceed e) {
