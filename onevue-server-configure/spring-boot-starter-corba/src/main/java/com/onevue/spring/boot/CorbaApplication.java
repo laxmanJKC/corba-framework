@@ -14,6 +14,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.Assert;
 
+import com.onevue.spring.beans.OrbBean;
+import com.onevue.spring.beans.handler.Handler;
 import com.onevue.spring.exception.OnevuCorbaException;
 
 public class CorbaApplication {
@@ -36,14 +38,14 @@ public class CorbaApplication {
 	private ConfigurableApplicationContext run(String... args) {
 		Class<?>[] primaryClazz = primarySources.toArray(new Class<?>[primarySources.size()]);
 		ConfigurableApplicationContext ctx = SpringApplication.run(primaryClazz, args);
-		ORB orb = ctx.getBean(CORBA_ORB_BEAN, ORB.class);
+		OrbBean orb = ctx.getBean(CORBA_ORB_BEAN, OrbBean.class);
 		POA rootPOA = ctx.getBean(CORBA_ROOT_POA, POA.class);
 		try {
 			rootPOA.the_POAManager().activate();
 		} catch (AdapterInactive e) {
 			throw new OnevuCorbaException("Activation of RootPOA failed as AdapterInactive " + e.getMessage());
 		}
-		orb.run();
+		Handler.startHandler(orb);
 		System.out.println("This Corba Application");
 		return ctx;
 	}

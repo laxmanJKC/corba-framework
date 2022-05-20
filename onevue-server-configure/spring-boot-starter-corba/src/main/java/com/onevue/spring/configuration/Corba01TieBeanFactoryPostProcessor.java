@@ -27,6 +27,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
+import com.onevue.spring.beans.OrbBean;
 import com.onevue.spring.beans.factory.CorbaObjectByServantFactoryBean;
 import com.onevue.spring.model.CorbaBindingProperty;
 
@@ -43,7 +44,8 @@ public class Corba01TieBeanFactoryPostProcessor
 		AnnotationConfigApplicationContext context = (AnnotationConfigApplicationContext) applicationContext;
 		String beanNames[] = registry.getBeanDefinitionNames();
 		List<String> corbaBeanNames = uniqueBeanName(beanNames);
-		ORB orb = applicationContext.getBean(CORBA_ORB_BEAN, ORB.class);
+		OrbBean orbBean = applicationContext.getBean(CORBA_ORB_BEAN, OrbBean.class);
+		ORB orb = orbBean.getOrb();
 		POA rootPOA = applicationContext.getBean(CORBA_ROOT_POA, POA.class);
 		OnevueCorbaProperties corbaProperties = applicationContext.getBean(OnevueCorbaProperties.class);
 		List<CorbaBindingProperty> bindingProperties = corbaProperties.getBindingProperties();

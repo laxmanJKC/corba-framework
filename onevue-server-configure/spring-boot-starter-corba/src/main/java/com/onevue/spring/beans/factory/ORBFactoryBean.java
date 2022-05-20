@@ -19,10 +19,11 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import com.onevue.spring.beans.OrbBean;
 import com.onevue.spring.configuration.OnevueCorbaProperties;
 
 @Component(value = CORBA_ORB_BEAN)
-public class ORBFactoryBean implements InitializingBean, FactoryBean<ORB> {
+public class ORBFactoryBean implements InitializingBean, FactoryBean<OrbBean> {
 
 	private ORB orb;
 
@@ -39,13 +40,13 @@ public class ORBFactoryBean implements InitializingBean, FactoryBean<ORB> {
 	}
 
 	@Override
-	public ORB getObject() throws Exception {
-		return this.orb;
+	public OrbBean getObject() throws Exception {
+		return new OrbBean(this.orb);
 	}
 
 	@Override
 	public Class<?> getObjectType() {
-		return ORB.class;
+		return OrbBean.class;
 	}
 
 	@Override

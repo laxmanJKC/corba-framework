@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
 
 import com.onevue.spring.enums.CorbaRegistry;
+import com.onevue.spring.enums.TLSVersion;
 import com.onevue.spring.model.CorbaBindingProperty;
 
 import lombok.Data;
@@ -26,6 +27,8 @@ public class OnevueCorbaProperties {
 	private String orbInitialPort = "3700";
 
 	private String orbInitialHost = "localhost";
+	
+	private TLSVersion corbaTlsVersion = TLSVersion.TLS_1_2;
 	
 	private String contextFactoryInitial = CORBA_CONTEXT_FACTORY_INTIAL_VALUE;
 	

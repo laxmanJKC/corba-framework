@@ -40,6 +40,7 @@ public enum POAPolicy {
 	
 	public static Policy createPolicy(POA rootPOA, POAPolicy policyProperties) {
 		Policy policy = null;
+		com.sun.corba.ee.spi.transport.ORBSocketFactory s = null;
 		switch (policyProperties.getPolicyType()) {
 		case LIFE_SPAN_POLICY:
 			LifespanPolicyValue lifeSpanValue = LifespanPolicyValue.from_int(policyProperties.getPolicyValue());
