@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.onevue.corba.sample</groupId>
+		<artifactId>corba-hello-world</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>corba-hello-world-idlj</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.onevue.spring</groupId>
+			<artifactId>spring-boot-starter-corba</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.onevue.spring</groupId>
+			<artifactId>onevue-corba</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>idlj-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<compiler>glassfish</compiler>
+					<sourceDirectory>
+						src/main/idl/
+					</sourceDirectory>
+					<outputDirectory>
+						src/main/java/
+					</outputDirectory>
+					<includeDirs>
+						src/main/idl/
+					</includeDirs>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
