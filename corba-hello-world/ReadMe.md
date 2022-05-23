@@ -1,1 +1,0 @@
-``mvn -Prmic clean process-classes compile package install``
