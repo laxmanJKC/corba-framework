@@ -5,13 +5,13 @@ import java.security.cert.X509Certificate;
 
 import javax.net.ssl.X509TrustManager;
 
-public class TrustManager {
+public class SocketTrustManager implements X509TrustManager {
 
 	private final X509TrustManager tm;
 
 	public X509Certificate[] chain;
 
-	TrustManager(X509TrustManager tm) {
+	public SocketTrustManager(X509TrustManager tm) {
 		this.tm = tm;
 	}
 
